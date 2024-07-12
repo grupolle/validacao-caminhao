@@ -1,0 +1,74 @@
+  body {
+        background-color: #DEDEDE;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        width: 100%;
+    }
+
+    .card-body {
+        max-width: 1000px;
+        width: 100%;
+        padding: 100px; /* Aumentando o espaçamento interno */
+        margin-top: 100px; /* Aumentando o espaçamento do topo */
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 900px; /* Ajustando a largura máxima do conteúdo da modal */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .modal-dialog {
+        max-width: 1000px; /* Ajustando a largura máxima do diálogo da modal */
+    }
+
+    .modal-body {
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+    }
+
+    .alert-message {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        width: 300px;
+        text-align: center;
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+    }
+
+    .entrou-icone {
+        font-size: 3.5rem; /* Aumentando o tamanho do ícone */
+    }
+
+    .form-control {
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+        padding: 25px; /* Aumentando o espaçamento interno */
+    }
+
+    .btn {
+        font-size: 2.5rem; /* Aumentando o tamanho da fonte */
+        padding: 25px 50px; /* Aumentando o espaçamento interno */
+    }
