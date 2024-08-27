@@ -21,10 +21,30 @@ public class Pedido {
 	
 	@Column(name="sequencia")
     private long sequencia;
+	
+	@Column(name="exigeconf")
+    private String exigeconf;
+	
+	  @Column(name="volumoso") 
+	    private String volumoso;
 
     // Getters e Setters
 
-  
+	public String getVolumoso() {
+		return volumoso;
+	}
+
+	public void setVolumoso(String volumoso) {
+		this.volumoso = volumoso;
+	}
+
+	public String getExigeconf() {
+		return exigeconf;
+	}
+
+	public void setExigeconf(String exigeconf) {
+		this.exigeconf = exigeconf;
+	}
 
 	public Long getOrdemCarga() {
         return ordemCarga;

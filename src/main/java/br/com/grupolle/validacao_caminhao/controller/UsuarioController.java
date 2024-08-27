@@ -2,6 +2,7 @@ package br.com.grupolle.validacao_caminhao.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,6 +114,8 @@ public class UsuarioController {
 	                pedido.setNumnota(jsonObject.optLong("numnota"));	               	      	                
 	                pedido.setEntroucaminhao(jsonObject.optString("entrou_caminhao"));
 	                pedido.setSequencia(jsonObject.optLong("sequencia"));
+	                pedido.setExigeconf(jsonObject.optString("exigeconf"));
+	                pedido.setVolumoso(jsonObject.optString("volumoso"));
 	                validacoes.add(pedido);
 	            }
 
@@ -130,7 +133,7 @@ public class UsuarioController {
 	        }
 	    }
 	}
-	
+		
 	@PutMapping("/validar-caminhao/idrev/{idrev}")
 	public ResponseEntity<String> validarCaminhao(@PathVariable Long idrev) {
 	    String login = UserDetailsService.getLoginFromLoggedInUser();
@@ -219,5 +222,6 @@ public class UsuarioController {
 			return new ResponseEntity<>("Erro: " + e.getMessage() , HttpStatus.NOT_FOUND);
 		}
 	}
+ 
    
 }

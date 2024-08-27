@@ -62,6 +62,14 @@
     .entrou-icone {
         font-size: 3.5rem; /* Aumentando o tamanho do ícone */
     }
+    .icon-eye {
+    cursor: pointer;
+    color: #007bff; /* Azul padrão, você pode alterar a cor */
+}
+
+.icon-eye:hover {
+    color: #0056b3; /* Cor ao passar o mouse */
+}
 
     .form-control {
         font-size: 2.5rem; /* Aumentando o tamanho da fonte */

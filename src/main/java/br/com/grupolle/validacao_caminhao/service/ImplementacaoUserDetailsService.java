@@ -27,11 +27,6 @@ public class ImplementacaoUserDetailsService implements UserDetailsService {
 			return usuario;
 	        }		
 	
-
-	public String getCnpj() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	 @Bean
 	    public BCryptPasswordEncoder passwordEncoder() {
 	        return new BCryptPasswordEncoder();
