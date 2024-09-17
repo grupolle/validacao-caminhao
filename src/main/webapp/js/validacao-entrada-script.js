@@ -80,26 +80,25 @@ $(document).ready(function() {
         $('#listaVolumoso tbody').html(tabelaVolumoso(volumoso));
     }
 
-    // Função para gerar HTML da tabela de volumoso
-    function tabelaVolumoso(volumoso) {
-        var rowsHtml = '';
-        var produtos = volumoso.split('\n');
+ function tabelaVolumoso(volumoso) {
+    var rowsHtml = '';
+    var produtos = volumoso.split(';'); 
+    
+    produtos.forEach(function(produto) {
+        var partes = produto.split('QTD');
+        var descricao = escapeHtml(partes[0].trim()); 
+        var quantidade = escapeHtml(partes.length > 1 ? partes[1].trim() : '');
 
-        produtos.forEach(function(produto) {
-            var partes = produto.split('QTD');
-            var descricao = escapeHtml(partes[0].trim());
-            var quantidade = escapeHtml(partes.length > 1 ? partes[1].trim() : '');
+        rowsHtml += `
+            <tr>
+                <td>${descricao}</td>
+                <td>${quantidade}</td>
+            </tr>
+        `;
+    });
 
-            rowsHtml += `
-                <tr>
-                    <td>${descricao}</td>
-                    <td>${quantidade}</td>
-                </tr>
-            `;
-        });
-
-        return rowsHtml;
-    }
+    return rowsHtml;
+}
 
     // Função para escapar HTML, prevenindo XSS
     function escapeHtml(text) {

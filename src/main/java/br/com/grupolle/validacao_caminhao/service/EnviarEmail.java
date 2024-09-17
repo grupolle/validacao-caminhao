@@ -19,9 +19,6 @@ public class EnviarEmail {
     @Value("${lle.ambiente}")
     private String lleAmbiente;
     
-    @Value("${lle.api_agendamento_transportadora.host}")
-    private String produtosNovosHost;
-    
     public void configurarContaEmail() {
 		String contaSMTP = "noreply@lleferragens.com.br";
 		String senhaSMTP = "grupoLLE2019";
