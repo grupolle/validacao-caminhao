@@ -87,7 +87,7 @@ public class UsuarioController {
 
 	    OkHttpClient client = new OkHttpClient();
 	    String apiKey = "a5F8jL2sG7dP9qZ1wX4cV6bN3mK0oH2iY8rT9eU5";
-	    String url = "http://192.168.2.58:8080/api-sankhya-lle/view/volume-entrada/validacoes-oc/" + ordemcarga + "?codemp=" + codemp;
+	    String url = "http://192.168.3.201:9000/api-sankhya-lle/view/volume-entrada/validacoes-oc/" + ordemcarga + "?codemp=" + codemp;
 
 	    Request request = new Request.Builder()
 	            .url(url)
@@ -141,7 +141,7 @@ public class UsuarioController {
 	        return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
 	    }
 
-	    String url = "http://192.168.2.58:8080/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
+	    String url = "http://192.168.3.201:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
 	    OkHttpClient client = new OkHttpClient();
 	    String apiKey = "a5F8jL2sG7dP9qZ1wX4cV6bN3mK0oH2iY8rT9eU5";
 
@@ -222,6 +222,9 @@ public class UsuarioController {
 			return new ResponseEntity<>("Erro: " + e.getMessage() , HttpStatus.NOT_FOUND);
 		}
 	}
+    
+   
+
  
    
 }
