@@ -36,15 +36,9 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers("/telavalidacao.html").permitAll()
 				.antMatchers("/trocarsenha.html").permitAll()	
 				.antMatchers("/js/**").permitAll()
-				.antMatchers("/styles/**").permitAll()
-				
-//				.antMatchers("/CaminhaoController/empresa").permitAll()			
+				.antMatchers("/styles/**").permitAll()		
 				.antMatchers("/primeiroacessoval").permitAll()
-//				.antMatchers("/CaminhaoController/chamar-validacoes-oc/**").permitAll()
-//				.antMatchers("/CaminhaoController/validar-caminhao/**").permitAll()
-				.antMatchers("/CaminhaoController/enviar-email-senha/**").permitAll()
-//				.antMatchers("/trocarSenha").permitAll()	
-					
+				.antMatchers("/CaminhaoController/enviar-email-senha/**").permitAll()					
 				.antMatchers("/esquecisenha.html").permitAll()					
 				.antMatchers("/esquecisenhaemail.html").permitAll()
 				.antMatchers("/validacao-caminhao/**").permitAll()
