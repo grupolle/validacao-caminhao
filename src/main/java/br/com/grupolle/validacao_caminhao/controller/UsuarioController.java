@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import br.com.grupolle.validacao_caminhao.mailTo.Email;
 import br.com.grupolle.validacao_caminhao.model.Pedido;
 import br.com.grupolle.validacao_caminhao.model.Usuarios;
-import br.com.grupolle.validacao_caminhao.model.ValidarCaminhaoRequest;
+//import br.com.grupolle.validacao_caminhao.model.ValidarCaminhaoRequest;
 import br.com.grupolle.validacao_caminhao.repository.UsuarioRepository;
 import br.com.grupolle.validacao_caminhao.service.AltSenha;
 import br.com.grupolle.validacao_caminhao.service.DadosPrimeiroAcesso;
