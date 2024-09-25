@@ -162,7 +162,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: 'UsuarioController/validar-caminhao/idrev/' + idRev,
+            url: 'CaminhaoController/validar-caminhao/idrev/' + idRev,
             type: 'PUT',
             dataType: 'text',
             headers: {
@@ -214,7 +214,7 @@ $(document).ready(function() {
     function carregarLista(ordemcarga) {
         var token = localStorage.getItem("token");
         $.ajax({
-            url: 'UsuarioController/chamar-validacoes-oc/ordemcarga/' + ordemcarga,
+            url: 'CaminhaoController/chamar-validacoes-oc/ordemcarga/' + ordemcarga,
             type: 'GET',
             dataType: 'json',
             headers: {

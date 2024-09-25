@@ -1,4 +1,4 @@
-package br.com.grupolle.validacao_caminhao.service;
+package br.com.grupolle.validacao_caminhao.model;
 
 public class AltSenha {
 	

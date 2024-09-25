@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 import br.com.grupolle.validacao_caminhao.mailTo.Email;
+import br.com.grupolle.validacao_caminhao.model.AltSenha;
+import br.com.grupolle.validacao_caminhao.model.DadosPrimeiroAcesso;
 import br.com.grupolle.validacao_caminhao.model.Pedido;
 import br.com.grupolle.validacao_caminhao.model.Usuarios;
 //import br.com.grupolle.validacao_caminhao.model.ValidarCaminhaoRequest;
 import br.com.grupolle.validacao_caminhao.repository.UsuarioRepository;
-import br.com.grupolle.validacao_caminhao.service.AltSenha;
-import br.com.grupolle.validacao_caminhao.service.DadosPrimeiroAcesso;
 import br.com.grupolle.validacao_caminhao.service.EnviarEmail;
 import br.com.grupolle.validacao_caminhao.service.GeradorSenha;
 import br.com.grupolle.validacao_caminhao.service.ImplementacaoUserDetailsService;
@@ -40,8 +40,8 @@ import okhttp3.*;
 
 
 @Controller
-@RequestMapping(value = "UsuarioController")
-public class UsuarioController {
+@RequestMapping(value = "CaminhaoController")
+public class CaminhaoController {
 	
 	@Autowired
 	private ImplementacaoUserDetailsService UserDetailsService;
@@ -196,7 +196,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @PostMapping(value = "enviaremailsenha")
+    @PostMapping(value = "enviar-email-senha")
 	@ResponseBody
 	public ResponseEntity<String> enviarEmailSenha(@RequestParam String emailUsuario) {
 		try {

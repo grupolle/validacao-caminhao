@@ -63,7 +63,7 @@ function enviarEmailSenha() {
 		var emailUsuario = document.getElementById("email").value;
 		$.ajax({
 			type: 'POST',
-			url: 'UsuarioController/enviaremailsenha',	
+			url: 'CaminhaoController/enviar-email-senha',	
 			data: { emailUsuario: emailUsuario },		
 			success: function (response) {
 				$('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
