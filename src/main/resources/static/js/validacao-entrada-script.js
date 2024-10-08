@@ -137,55 +137,60 @@ $(document).ready(function() {
         validarIdRev(idRev);  // Chama a função de validação com o idRev
         validarManualModal.modal('hide');  // Fecha a modal
     };
+    
+   // Função para validar o IDREV
+function validarIdRev(idRev) {
+    var token = localStorage.getItem("token");
 
-    // Função para validar o IDREV
-    function validarIdRev(idRev) {
-        var token = localStorage.getItem("token");
+    // Verificar se o IDREV já foi validado
+    const row = tabelaordemcarga.find('tr').filter(function() {
+        return $(this).find('.idrev').text() === idRev;
+    });
 
-        // Verificar se o IDREV já foi validado
-        const row = tabelaordemcarga.find('tr').filter(function() {
-            return $(this).find('.idrev').text() === idRev;
-        });
-
-        if (row.length && row.find('.entrou').find('i').hasClass('fa-check')) {
-            showAlert('ETIQUETA JÁ VALIDADA', 'danger');
-             $('#inputIdRev').val('');
-            return;
-        }
-
-        var idRevPresente = row.length > 0;
-
-        if (!idRevPresente) {
-            showAlert("Esse volume não pertence à ordem de carga informada.", 'danger');
-            $('#inputIdRev').val('');
-            return;
-        }
-
-        $.ajax({
-            url: 'CaminhaoController/validar-caminhao/idrev/' + idRev,
-            type: 'PUT',
-            dataType: 'text',
-            headers: {
-                Authorization: 'Bearer ' + token
-            },
-            success: function(data) {
-                if (data === "Sucesso") { // Supondo que a resposta seja o texto "Sucesso"
-                    showAlert("Volume validado com sucesso.", 'success');
-                     $('#inputIdRev').val('');
-                    atualizarIcone(idRev);
-                    moverParaFim(idRev);
-                } else {
-                    showAlert("Falha na validação do volume.", 'danger');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Erro ao validar volume:', error);
-                console.log('Status:', status);
-                console.log('Response Text:', xhr.responseText);
-                showAlert("Erro ao validar volume.", 'danger');
-            }
-        });
+    if (row.length && row.find('.entrou').find('i').hasClass('fa-check')) {
+        showAlert('ETIQUETA JÁ VALIDADA', 'danger');
+        tocarSom('sounds/incorreto.mp3');
+        $('#inputIdRev').val('');
+        return;
     }
+
+    var idRevPresente = row.length > 0;
+
+    if (!idRevPresente) {
+        showAlert("Esse volume não pertence à ordem de carga informada.", 'danger');
+        tocarSom('sounds/incorreto.mp3');
+        $('#inputIdRev').val('');
+        return;
+    }
+
+    $.ajax({
+        url: 'CaminhaoController/validar-caminhao/idrev/' + idRev,
+        type: 'PUT',
+        dataType: 'text',
+        headers: {
+            Authorization: 'Bearer ' + token
+        },
+        success: function(data) {
+            if (data === "Sucesso") { // Supondo que a resposta seja o texto "Sucesso"
+                showAlert("Volume validado com sucesso.", 'success');
+                tocarSom('sounds/correto.mp3');
+                $('#inputIdRev').val('');
+                atualizarIcone(idRev);
+                moverParaFim(idRev);
+            } else {
+                showAlert("Falha na validação do volume.", 'danger');
+              tocarSom('sounds/incorreto.mp3');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Erro ao validar volume:', error);
+            console.log('Status:', status);
+            console.log('Response Text:', xhr.responseText);
+            showAlert("Erro ao validar volume.", 'danger');
+          tocarSom('static/sounds/incorreto.mp3');
+        }
+    });
+}
 
     // Função para atualizar o ícone na tabela principal
     function atualizarIcone(idRev) {
@@ -278,6 +283,12 @@ function deslogar() {
     localStorage.removeItem('cnpj');
     localStorage.removeItem('login');
     window.location.href = "loginvalidacao.html";
+}
+function tocarSom(url) {
+    var audio = new Audio(url);
+    audio.play().catch(function(error) {
+        console.error('Erro ao tocar o som:', error);
+    });
 }
     
 });
