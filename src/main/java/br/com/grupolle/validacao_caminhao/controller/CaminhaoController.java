@@ -116,6 +116,8 @@ public class CaminhaoController {
 	                pedido.setSequencia(jsonObject.optLong("sequencia"));
 	                pedido.setExigeconf(jsonObject.optString("exigeconf"));
 	                pedido.setVolumoso(jsonObject.optString("volumoso"));
+	                pedido.setNomeparc(jsonObject.optString("nomeparc"));
+	                pedido.setArea(jsonObject.optString("area"));
 	                validacoes.add(pedido);
 	            }
 

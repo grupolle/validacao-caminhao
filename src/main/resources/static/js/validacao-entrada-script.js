@@ -74,33 +74,9 @@ $(document).ready(function() {
         $('#inputIdRev').focus();
     });
 
-    // Função para carregar os itens na modal
-    function carregarItensModal(idRev, volumoso) {
-        $('#idRevManual').val(idRev);  // Armazena o idRev na modal
-        $('#listaVolumoso tbody').html(tabelaVolumoso(volumoso));
-    }
 
- function tabelaVolumoso(volumoso) {
-    var rowsHtml = '';
-    var produtos = volumoso.split(';'); 
-    
-    produtos.forEach(function(produto) {
-        var partes = produto.split('QTD');
-        var descricao = escapeHtml(partes[0].trim()); 
-        var quantidade = escapeHtml(partes.length > 1 ? partes[1].trim() : '');
 
-        rowsHtml += `
-            <tr>
-                <td>${descricao}</td>
-                <td>${quantidade}</td>
-            </tr>
-        `;
-    });
 
-    return rowsHtml;
-}
-
-    // Função para escapar HTML, prevenindo XSS
     function escapeHtml(text) {
         var map = {
             '&': '&amp;',
@@ -214,7 +190,7 @@ function validarIdRev(idRev) {
             tabelaordemcarga.append(row); // Adiciona a linha ao fim da tabela
         }
     }
-
+    var dadosOrdemCarga = [];  // Variável para armazenar os dados
     // Função para carregar a lista de ordens de carga
     function carregarLista(ordemcarga) {
         var token = localStorage.getItem("token");
@@ -226,6 +202,7 @@ function validarIdRev(idRev) {
                 Authorization: 'Bearer ' + token
             },
             success: function(data) {
+				dadosOrdemCarga = data; 
                 tabelaordemcarga.empty(); // Limpar a tabela antes de adicionar novos dados
 
                 let total = data.length;
@@ -236,7 +213,11 @@ function validarIdRev(idRev) {
                     const entroucaminhao = entrada['entroucaminhao'];
                     const entrouIcone = (entroucaminhao === 'S') ? '<i class="fas fa-check text-success entrou-icone"></i>' : '<i class="fas fa-times text-danger entrou-icone"></i>';
                     const confCell = (entrada['exigeconf'] === 'N') ? '<i class="fas fa-eye icon-eye" data-volumoso="' + entrada['volumoso'] + '"></i>' : '';
-
+                    const infoCell = '<i class="fas fa-info-circle icon-info" data-idrev="' + entrada['idrev'] + '"></i>'; // Botão de informações
+                    const nomeparc = entrada['nomeparc'] || 'N/A';  // Verifica se 'nomeparc' existe
+                    const area = entrada['area'] || 'N/A';  // Verifica se 'area' existe
+                    
+                    
                     const row = `
                         <tr>
                             <td class="idrev">${entrada['idrev']}</td>
@@ -244,6 +225,7 @@ function validarIdRev(idRev) {
                             <td class="entrou">${entrouIcone}</td>
                             <td class="sequencia">${entrada['sequencia']}</td>
                             <td class="conf-cell">${confCell}</td>
+                             <td class="info-cell">${infoCell}</td> 
                         </tr>`;
                     if (entroucaminhao === 'S') {
                         validados.push(row);
@@ -289,6 +271,69 @@ function tocarSom(url) {
     audio.play().catch(function(error) {
         console.error('Erro ao tocar o som:', error);
     });
-}
     
+}
+    // Função para carregar os itens na modal
+    function carregarItensModal(idRev, volumoso) {
+        $('#idRevManual').val(idRev);  // Armazena o idRev na modal
+        $('#listaVolumoso tbody').html(tabelaVolumoso(volumoso));
+    }
+ function tabelaVolumoso(volumoso) {
+    var rowsHtml = '';
+    var produtos = volumoso.split(';'); 
+    
+    produtos.forEach(function(produto) {
+        var partes = produto.split('QTD');
+        var descricao = escapeHtml(partes[0].trim()); 
+        var quantidade = escapeHtml(partes.length > 1 ? partes[1].trim() : '');
+
+        rowsHtml += `
+            <tr>
+                <td>${descricao}</td>
+                <td>${quantidade}</td>
+            </tr>
+        `;
+    });
+
+    return rowsHtml;
+}
+// Função para abrir a modal modalValidar e carregar as informações
+function abrirModalInfo(info) {
+    // Exibe o idRev e carrega os dados
+    $('#idRevInfo').val(info.idrev || 'N/A');  // Armazena o idRev na modal
+
+    // Preenche a tabela na modal com os dados recebidos
+    $('#ModalInfo tbody').html(tabelaInfo(info)); 
+    $('#ModalInfo').modal('show');  // Exibe a modal modalValidar
+}
+
+// Função para criar as linhas da tabela com as informações recebidas
+function tabelaInfo(info) {
+    var area = info.area || 'N/A';  // Garante que 'area' tem um valor válido
+    var nomeparc = info.nomeparc || 'N/A';  // Garante que 'nomeparc' tem um valor válido
+
+    var rowsHtml = `
+        <tr>
+            <td>${area}</td>
+            <td>${nomeparc}</td>
+        </tr>
+    `;
+
+    return rowsHtml;  // Retorna as linhas para preencher o corpo da tabela
+}
+
+// Evento para abrir a modal de informações
+$(document).on('click', '.icon-info', function() {
+    var idRev = $(this).data('idrev');  // Captura o idRev associado ao botão de informação
+
+    // Busca as informações nos dados carregados
+    var info = dadosOrdemCarga.find(entrada => entrada.idrev === idRev);
+
+    if (info) {
+        abrirModalInfo(info);  // Chama a função para abrir a modal e carregar as informações
+    } else {
+        console.error('Informações não encontradas para o idRev:', idRev);
+    }
+});
+
 });

@@ -28,7 +28,7 @@
                             <th>N.PED</th>
                             <th>VAL</th>
                             <th>SEQ</th>
-                            <th>CONF</th>
+                            <th>INFO</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -44,7 +44,6 @@
         </div>
     </div>
 
-    <!-- Modal Manual -->
     <div class="modal fade" id="validarManualModal" tabindex="-1" aria-labelledby="validarManualModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -71,6 +70,31 @@
             </div>
         </div>
     </div>
+     <div class="modal fade" id="ModalInfo" tabindex="-1" aria-labelledby="ModalInfoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalInfoLabel">Informações do Volume.</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="listaInfo" class="table">
+                        <thead>
+                            <tr>
+                               <th>Área</th>
+                                <th>Cliente</th>                             
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <input type="hidden" id="idRevManual">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>                
+                </div>
+            </div>
+        </div>
+    </div>
          <div class="modal fade" id=modalValidar tabindex="-1" aria-labelledby="modalValidarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -86,7 +110,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                  <!--   <button type="button" class="btn btn-success" id="btnIniciarValidacao">Validar</button>  -->
                 </div>
             </div>
         </div>
