@@ -12,14 +12,17 @@
 <body>
     <div class="table-container">
         <div class="card card-body mt-5">
-            <h1 class="text-center mb-4">VALIDAÇÃO DE ENTRADA</h1>
-            <button type="button" class="btn btn-dark" id="btnDeslogar">Deslogar</button>
-            <hr>
+          <button type="button" class="btn btn-dark" id="btnDeslogar">Deslogar</button>
+            <h1 class="text-center mb-5">VALIDAÇÃO ENTRADA</h1>
+                     <hr>
             <div class="input-group-append">
                 <button id="btnLimpar" class="btn btn-primary" type="button">Limpar</button>
                 <button id="btnAbrirModalValidar" class="btn btn-danger d-none" type="button">VALIDAR</button>
             </div>
             <input id="inputOC" type="text" class="form-control mt-3 mb-3" placeholder="Ordem de Carga">
+                    <div class="total-container">
+    <div id="totalRegistros"></div>
+</div>
             <div id="table-wrapper" class="table-responsive">
                 <table class="table table-hover table-striped" id="tabelaordemcarga">
                     <thead class="table-dark">
@@ -33,9 +36,9 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
-                    <tfoot>
+                   <tfoot>
                         <tr>
-                            <td colspan="3" id="totalRegistros" class="text-end"></td>
+                            <td colspan="3" id="totalGeral" class="text-end"></td>
                             <td class="conf-cell"></td>
                         </tr>
                     </tfoot>
@@ -43,6 +46,7 @@
             </div>
         </div>
     </div>
+ 
 
     <div class="modal fade" id="validarManualModal" tabindex="-1" aria-labelledby="validarManualModalLabel" aria-hidden="true">
         <div class="modal-dialog">

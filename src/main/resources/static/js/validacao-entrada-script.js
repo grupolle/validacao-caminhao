@@ -59,15 +59,28 @@ $(document).ready(function() {
         inputIdRev.val('');
     });
 
-    inputIdRev.on('input', function () {
-        const idRev = $(this).val().trim();
-        clearTimeout(this.timer);
-        this.timer = setTimeout(function () {
-            if (idRev !== '') {
-                validarIdRev(idRev);
+$('#inputIdRev').on('input', function () {
+    const idRev = $(this).val().trim();
+    const inputOC = $('#inputOC').val().trim(); // Obtendo o valor do inputOC
+
+    clearTimeout(this.timer);
+    this.timer = setTimeout(function () {
+        if (idRev !== '') {
+            if (idRev === inputOC) {
+                // Remove alertas anteriores específicos para evitar duplicação
+                $('.alert-oc-warning').remove();
+
+                // Exibe um alerta amarelo específico
+                $('body').append('<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC</div>');
+
+                // Remove o alerta após 3 segundos
+                setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 3000);
+            } else {
+                validarIdRev(idRev, 'E');  // Passando "E" como parâmetro
             }
-        }, 500);
-    });
+        }
+    }, 1000);
+});
 
     // Função para abrir modal de validação normal com foco no campo de inputIdRev
     $('#modalValidar').on('shown.bs.modal', function () {
@@ -99,7 +112,7 @@ $(document).ready(function() {
         }, 1000);
     }
 
-    // Evento para abrir a modal e carregar os itens
+  // Evento para abrir a modal e carregar os itens
     $(document).on('click', '.icon-eye', function() {
         var idRev = $(this).closest('tr').find('.idrev').text();
         var volumoso = $(this).data('volumoso');
@@ -107,66 +120,48 @@ $(document).ready(function() {
         validarManualModal.modal('show');
     });
 
-    // Função global para validar o idRev da modal
-    window.validarVolumeManual = function() {
-        var idRev = $('#idRevManual').val();  // Captura o idRev armazenado na modal
-        validarIdRev(idRev);  // Chama a função de validação com o idRev
-        validarManualModal.modal('hide');  // Fecha a modal
-    };
+window.validarVolumeManual = function() {
+    var idRev = $('#idRevManual').val();  
+    validarIdRev(idRev, 'M');  
+    $('#validarManualModal').modal('hide');
+};
+
     
-   // Função para validar o IDREV
-function validarIdRev(idRev) {
+function validarIdRev(idRev, tipoValidacao) {
     var token = localStorage.getItem("token");
-
-    // Verificar se o IDREV já foi validado
-    const row = tabelaordemcarga.find('tr').filter(function() {
-        return $(this).find('.idrev').text() === idRev;
-    });
-
-    if (row.length && row.find('.entrou').find('i').hasClass('fa-check')) {
-        showAlert('ETIQUETA JÁ VALIDADA', 'danger');
-        tocarSom('sounds/incorreto.mp3');
-        $('#inputIdRev').val('');
-        return;
-    }
-
-    var idRevPresente = row.length > 0;
-
-    if (!idRevPresente) {
-        showAlert("Esse volume não pertence à ordem de carga informada.", 'danger');
-        tocarSom('sounds/incorreto.mp3');
-        $('#inputIdRev').val('');
-        return;
-    }
-
+    var login = localStorage.getItem("login");
     $.ajax({
-        url: 'CaminhaoController/validar-caminhao/idrev/' + idRev,
+        url: 'CaminhaoController/validar-caminhao/idrev/' + idRev + '?tipoValidacao=' + tipoValidacao,
         type: 'PUT',
-        dataType: 'text',
+          contentType: 'application/json',  // Defina o tipo como JSON
+    data: JSON.stringify({
+        login: login,  // Passe o login ou qualquer outra informação necessária
+        tipoValidacao: tipoValidacao  // Passe o tipo de validação
+    }),
         headers: {
             Authorization: 'Bearer ' + token
         },
         success: function(data) {
-            if (data === "Sucesso") { // Supondo que a resposta seja o texto "Sucesso"
+            if (data === "Sucesso") {
                 showAlert("Volume validado com sucesso.", 'success');
                 tocarSom('sounds/correto.mp3');
                 $('#inputIdRev').val('');
                 atualizarIcone(idRev);
+                atualizarContadores();
                 moverParaFim(idRev);
             } else {
                 showAlert("Falha na validação do volume.", 'danger');
-              tocarSom('sounds/incorreto.mp3');
+                tocarSom('sounds/incorreto.mp3');
             }
         },
         error: function(xhr, status, error) {
             console.error('Erro ao validar volume:', error);
-            console.log('Status:', status);
-            console.log('Response Text:', xhr.responseText);
             showAlert("Erro ao validar volume.", 'danger');
-          tocarSom('static/sounds/incorreto.mp3');
+            tocarSom('sounds/incorreto.mp3');
         }
     });
 }
+
 
     // Função para atualizar o ícone na tabela principal
     function atualizarIcone(idRev) {
@@ -208,6 +203,7 @@ function validarIdRev(idRev) {
                 let total = data.length;
                 let validados = [];
                 let naoValidados = [];
+               
 
                 data.forEach(entrada => {
                     const entroucaminhao = entrada['entroucaminhao'];
@@ -236,8 +232,9 @@ function validarIdRev(idRev) {
 
                 tabelaordemcarga.append(naoValidados.join(''));
                 tabelaordemcarga.append(validados.join(''));
+            
+                atualizarContadores();
 
-                totalRegistros.text(`FORAM ENCONTRADOS ${total} REGISTROS`); // Atualiza o texto de totalRegistros
 
                 if (total > 0) {
                     btnAbrirModalValidar.removeClass('d-none');
@@ -255,6 +252,25 @@ function validarIdRev(idRev) {
         });
         
  }
+ function atualizarContadores() {
+    let totalNaoValidados = $('#tabelaordemcarga tbody tr').filter(function() {
+        return $(this).find('.entrou .fa-times').length > 0;
+    }).length;
+
+    let totalValidados = $('#tabelaordemcarga tbody tr').filter(function() {
+        return $(this).find('.entrou .fa-check').length > 0;
+    }).length;
+
+    let totalGeral = $('#tabelaordemcarga tbody tr').length; // Contagem total de registros
+
+    // Atualiza os valores no HTML
+    $('#totalRegistros').html(`
+      <span class="texto-verde">${totalValidados} VALIDADOS</span> <br>
+       <span class="texto-preta">E</span> 
+        <span class="texto-vermelho">${totalNaoValidados} PENDENTES</span>         
+        <span class="texto-azul">DE ${totalGeral} VOLUMES</span>
+    `);
+}
  
   $('#btnDeslogar').on('click', function () {
         deslogar();

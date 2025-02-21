@@ -7,11 +7,34 @@
         margin: 0;
         padding: 20px;
     }
+#tabelaordemcarga {
+    border-spacing: 20px; /* Ajuste conforme necessário */
+}
 
     .container {
         max-width: 1200px;
         width: 100%;
     }
+    #btnDeslogar {
+    font-size: 1rem; /* Diminui o tamanho do texto */
+    padding: 5px 10px; /* Reduz o tamanho do botão */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.alert-oc-warning {
+    background-color: yellow;
+    color: black;
+    border: 1px solid #ffc107; /* Tom amarelo para destacar */
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+    
 
     .card-body {
         max-width: 1000px;
@@ -80,3 +103,22 @@
         font-size: 2.5rem; /* Aumentando o tamanho da fonte */
         padding: 25px 50px; /* Aumentando o espaçamento interno */
     }
+    #totalRegistros {
+    display: flex;
+    justify-content: space-between; /* Um à esquerda e outro à direita */
+    align-items: center;
+    width: 100%;
+     font-size: 1.5rem; /* Ajuste conforme necessário */
+    padding: 10px 20px;
+}
+
+.texto-vermelho {
+    color: red;
+    font-weight: bold;
+}
+
+.texto-verde {
+    color: green;
+    font-weight: bold;
+}
+    
