@@ -135,19 +135,24 @@ public class CaminhaoController {
 	}
 		
 	@PutMapping("/validar-caminhao/idrev/{idrev}")
-	public ResponseEntity<String> validarCaminhao(@PathVariable Long idrev) {
+	public ResponseEntity<String> validarCaminhao(
+	        @PathVariable Long idrev,
+	        @RequestParam String tipoValidacao) {
+
 	    String login = UserDetailsService.getLoginFromLoggedInUser();
 	    if (login == null) {
 	        return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
 	    }
 
-	    String url = "http://192.168.3.201:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
+	   // String url = "http://192.168.3.201:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
+	    String url = "http://localhost:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
 	    OkHttpClient client = new OkHttpClient();
 	    String apiKey = "a5F8jL2sG7dP9qZ1wX4cV6bN3mK0oH2iY8rT9eU5";
 
-        System.out.println("Login enviado: " + login);
+	    String jsonContent = "{ \"login\": \"" + login + "\", \"tipoValidacao\": \"" + tipoValidacao + "\" }";
+	    okhttp3.RequestBody body = okhttp3.RequestBody.create(
+	            jsonContent, okhttp3.MediaType.parse("application/json; charset=utf-8"));
 
-	    okhttp3.RequestBody body = okhttp3.RequestBody.create(login, okhttp3.MediaType.parse("text/plain; charset=utf-8"));
 
 	    Request request = new Request.Builder()
 	            .url(url)
