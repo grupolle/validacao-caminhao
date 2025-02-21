@@ -72,6 +72,7 @@ $('#inputIdRev').on('input', function () {
                 $('.alert-oc-warning').remove();
                 $('body').append(`<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC: <strong>${idRev}</strong></div>`);
                 $('#inputIdRev').val('');
+                 tocarSom('sounds/incorreto.mp3');
 
                 setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 2000);
             } else {
@@ -83,6 +84,7 @@ $('#inputIdRev').on('input', function () {
                     $('.alert-etiqueta-nao-encontrada').remove();
                     $('body').append(`<div class="alert-message alert-etiqueta-nao-encontrada">A ETIQUETA <strong>${idRev}</strong> NÃO PERTENCE À ORDEM DE CARGA INFORMADA</div>`);
                     $('#inputIdRev').val('');
+                     tocarSom('sounds/incorreto.mp3');
 
                     setTimeout(() => $('.alert-etiqueta-nao-encontrada').fadeOut(500, function() { $(this).remove(); }), 2000);
                 } else {
@@ -92,6 +94,7 @@ $('#inputIdRev').on('input', function () {
                         $('.alert-etiqueta-ja-validada').remove();
                         $('body').append(`<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA <strong>${idRev}</strong> JÁ VALIDADA</div>`);
                         $('#inputIdRev').val('');
+                         tocarSom('sounds/incorreto.mp3');
 
                         setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 2000);
                     } else {
@@ -103,17 +106,12 @@ $('#inputIdRev').on('input', function () {
     }, 1000);
 });
 
-
-
     // Função para abrir modal de validação normal com foco no campo de inputIdRev
     $('#modalValidar').on('shown.bs.modal', function () {
         $('#inputIdRev').focus();
     });
 
-
-
-
-    function escapeHtml(text) {
+   function escapeHtml(text) {
         var map = {
             '&': '&amp;',
             '<': '&lt;',
