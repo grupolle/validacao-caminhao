@@ -34,6 +34,30 @@
     transform: translateX(-50%);
     z-index: 9999;
 }
+.alert-etiqueta-nao-encontrada {
+    background-color: red;
+    color: white;
+    border: 1px solid darkred;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+.alert-etiqueta-ja-validada {
+    background-color: blue;
+    color: white;
+    border: 1px solid darkblue;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
     
 
     .card-body {

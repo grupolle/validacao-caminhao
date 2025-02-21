@@ -67,20 +67,52 @@ $('#inputIdRev').on('input', function () {
     this.timer = setTimeout(function () {
         if (idRev !== '') {
             if (idRev === inputOC) {
-                // Remove alertas anteriores específicos para evitar duplicação
+                // Remove alertas anteriores para evitar duplicação
                 $('.alert-oc-warning').remove();
 
                 // Exibe um alerta amarelo específico
                 $('body').append('<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC</div>');
-
+                $('#inputIdRev').val('');
                 // Remove o alerta após 3 segundos
                 setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 3000);
             } else {
-                validarIdRev(idRev, 'E');  // Passando "E" como parâmetro
+                // Verifica se o IDREV informado existe na tabela
+                const linhaCorrespondente = $('#tabelaordemcarga tbody tr').filter(function () {
+                    return $(this).find('td:first').text().trim() === idRev;
+                });
+
+                if (linhaCorrespondente.length === 0) {
+                    // Remove alertas anteriores para evitar repetição
+                    $('.alert-etiqueta-nao-encontrada').remove();
+
+                    // Exibe um alerta vermelho específico
+                    $('body').append('<div class="alert-message alert-etiqueta-nao-encontrada">A etiqueta informada não pertence à ordem de carga informada</div>');
+                      $('#inputIdRev').val('');
+                    // Remove o alerta após 3 segundos
+                    setTimeout(() => $('.alert-etiqueta-nao-encontrada').fadeOut(500, function() { $(this).remove(); }), 3000);
+                } else {
+                    // Verifica se o IDREV informado já foi validado (se tem o ícone de check)
+                    const jaValidado = linhaCorrespondente.find('.entrou .fa-check').length > 0;
+
+                    if (jaValidado) {
+                        // Remove alertas anteriores para evitar repetição
+                        $('.alert-etiqueta-ja-validada').remove();
+                         $('#inputIdRev').val('');
+                        // Exibe um alerta azul específico
+                        $('body').append('<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA JÁ VALIDADA</div>');
+
+                        // Remove o alerta após 3 segundos
+                        setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 3000);
+                    } else {
+                        validarIdRev(idRev, 'E');  // Passando "E" como parâmetro
+                    }
+                }
             }
         }
     }, 1000);
 });
+
+
 
     // Função para abrir modal de validação normal com foco no campo de inputIdRev
     $('#modalValidar').on('shown.bs.modal', function () {
@@ -265,8 +297,7 @@ function validarIdRev(idRev, tipoValidacao) {
 
     // Atualiza os valores no HTML
     $('#totalRegistros').html(`
-      <span class="texto-verde">${totalValidados} VALIDADOS</span> <br>
-       <span class="texto-preta">E</span> 
+      <span class="texto-verde">${totalValidados} VALIDADOS</span> <br> 
         <span class="texto-vermelho">${totalNaoValidados} PENDENTES</span>         
         <span class="texto-azul">DE ${totalGeral} VOLUMES</span>
     `);
