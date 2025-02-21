@@ -74,7 +74,7 @@ $('#inputIdRev').on('input', function () {
                 $('body').append('<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC</div>');
                 $('#inputIdRev').val('');
                 // Remove o alerta após 3 segundos
-                setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 3000);
+                setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 2000);
             } else {
                 // Verifica se o IDREV informado existe na tabela
                 const linhaCorrespondente = $('#tabelaordemcarga tbody tr').filter(function () {
@@ -89,7 +89,7 @@ $('#inputIdRev').on('input', function () {
                     $('body').append('<div class="alert-message alert-etiqueta-nao-encontrada">A etiqueta informada não pertence à ordem de carga informada</div>');
                       $('#inputIdRev').val('');
                     // Remove o alerta após 3 segundos
-                    setTimeout(() => $('.alert-etiqueta-nao-encontrada').fadeOut(500, function() { $(this).remove(); }), 3000);
+                    setTimeout(() => $('.alert-etiqueta-nao-encontrada').fadeOut(500, function() { $(this).remove(); }), 2000);
                 } else {
                     // Verifica se o IDREV informado já foi validado (se tem o ícone de check)
                     const jaValidado = linhaCorrespondente.find('.entrou .fa-check').length > 0;
@@ -102,7 +102,7 @@ $('#inputIdRev').on('input', function () {
                         $('body').append('<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA JÁ VALIDADA</div>');
 
                         // Remove o alerta após 3 segundos
-                        setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 3000);
+                        setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 2000);
                     } else {
                         validarIdRev(idRev, 'E');  // Passando "E" como parâmetro
                     }
