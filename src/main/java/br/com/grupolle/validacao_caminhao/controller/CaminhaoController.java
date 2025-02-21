@@ -146,8 +146,8 @@ public class CaminhaoController {
 	        return new ResponseEntity<>("Usuário não autenticado", HttpStatus.UNAUTHORIZED);
 	    }
 
-	    String url = "http://192.168.3.201:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
-	    //String url = "http://localhost:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
+	    //String url = "http://192.168.3.201:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
+	    String url = "http://localhost:9000/api-sankhya-lle/input/volume-entrada/validar-caminhao/" + idrev;
 	    OkHttpClient client = new OkHttpClient();
 	    String apiKey = "a5F8jL2sG7dP9qZ1wX4cV6bN3mK0oH2iY8rT9eU5";
 

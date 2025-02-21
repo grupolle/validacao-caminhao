@@ -60,51 +60,42 @@ $(document).ready(function() {
     });
 
 $('#inputIdRev').on('input', function () {
-    const idRev = $(this).val().trim();
     const inputOC = $('#inputOC').val().trim(); // Obtendo o valor do inputOC
+    const self = this; // Salva referência ao input para uso no setTimeout
 
     clearTimeout(this.timer);
     this.timer = setTimeout(function () {
+        const idRev = $(self).val().trim(); // Captura o valor dentro do setTimeout
+
         if (idRev !== '') {
             if (idRev === inputOC) {
-                // Remove alertas anteriores para evitar duplicação
                 $('.alert-oc-warning').remove();
-
-                // Exibe um alerta amarelo específico
-                $('body').append('<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC</div>');
+                $('body').append(`<div class="alert-message alert-oc-warning">VOCÊ ESTÁ INFORMANDO A OC: <strong>${idRev}</strong></div>`);
                 $('#inputIdRev').val('');
-                // Remove o alerta após 3 segundos
+
                 setTimeout(() => $('.alert-oc-warning').fadeOut(500, function() { $(this).remove(); }), 2000);
             } else {
-                // Verifica se o IDREV informado existe na tabela
                 const linhaCorrespondente = $('#tabelaordemcarga tbody tr').filter(function () {
                     return $(this).find('td:first').text().trim() === idRev;
                 });
 
                 if (linhaCorrespondente.length === 0) {
-                    // Remove alertas anteriores para evitar repetição
                     $('.alert-etiqueta-nao-encontrada').remove();
+                    $('body').append(`<div class="alert-message alert-etiqueta-nao-encontrada">A ETIQUETA <strong>${idRev}</strong> NÃO PERTENCE À ORDEM DE CARGA INFORMADA</div>`);
+                    $('#inputIdRev').val('');
 
-                    // Exibe um alerta vermelho específico
-                    $('body').append('<div class="alert-message alert-etiqueta-nao-encontrada">A etiqueta informada não pertence à ordem de carga informada</div>');
-                      $('#inputIdRev').val('');
-                    // Remove o alerta após 3 segundos
                     setTimeout(() => $('.alert-etiqueta-nao-encontrada').fadeOut(500, function() { $(this).remove(); }), 2000);
                 } else {
-                    // Verifica se o IDREV informado já foi validado (se tem o ícone de check)
                     const jaValidado = linhaCorrespondente.find('.entrou .fa-check').length > 0;
 
                     if (jaValidado) {
-                        // Remove alertas anteriores para evitar repetição
                         $('.alert-etiqueta-ja-validada').remove();
-                         $('#inputIdRev').val('');
-                        // Exibe um alerta azul específico
-                        $('body').append('<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA JÁ VALIDADA</div>');
+                        $('body').append(`<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA <strong>${idRev}</strong> JÁ VALIDADA</div>`);
+                        $('#inputIdRev').val('');
 
-                        // Remove o alerta após 3 segundos
                         setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 2000);
                     } else {
-                        validarIdRev(idRev, 'E');  // Passando "E" como parâmetro
+                        validarIdRev(idRev, 'E');
                     }
                 }
             }
