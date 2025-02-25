@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+</head>
+<style>
+	
+	.btn-custom {
+		background-color: #d0444c;
+		color: #fff;
+	}
+
+	.btn-custom:hover {
+		background-color: #a5333d;
+		color: #fff;
+	}
+
+	.central {
+		text-align: center;
+		
+	}
+		
+</style>
+
+
+<body>
+	<div id="mensagemContainerSenha"></div>	
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">Digite o email.</h3>
+						<h7 class="text-center">Será enviada uma senha provisória de acesso.</h7>
+					</div>
+					
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label">Email:</label>
+							<input type="text" class="form-control" id="email" name="email" required="true">
+						</div>
+						
+						<div style="margin-left:0.5%">
+							<button type="button" class="btn btn-secondary"
+								onclick="window.location.href = 'loginvalidacao.html';">Voltar</button>
+							<button type="button" class="btn btn-primary" onclick="enviarEmailSenha() ">Enviar senha</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+</body>
+
+<script>
+function enviarEmailSenha() {
+		var emailUsuario = document.getElementById("email").value;
+		$.ajax({
+			type: 'POST',
+			url: 'CaminhaoController/enviar-email-senha',	
+			data: { emailUsuario: emailUsuario },		
+			success: function (response) {
+				$('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+					'<strong> Email com sua senha provisória enviado com sucesso!</strong>' +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>'
+				).appendTo('#mensagemContainerSenha');
+			},			
+			error: function (error) {						
+				$('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+					'<strong> Email não enviado:'+error.responseText+'</strong>' +
+					'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+					'</div>'
+				).appendTo('#mensagemContainerSenha');
+			}
+		});
+	}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</html>

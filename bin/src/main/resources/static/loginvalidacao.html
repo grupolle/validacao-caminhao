@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Login</title>
+
+	<!-- Adicione o link para o Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<style>
+	.btn-custom {
+		background-color: #d0444c;
+		color: #fff;
+	}
+
+	.btn-custom:hover {
+		background-color: #a5333d;
+		color: #fff;
+	}
+
+	.central {
+		text-align: center;
+	}
+</style>
+
+<body>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">Login</h3>
+					</div>
+					<div class="card-body">				
+						<div class="mb-3">
+							<label for="login" class="form-label">Login</label>
+							<input type="text" class="form-control" id="login" name="login" required>
+						</div>
+						<div class="mb-3">
+							<label for="senha" class="form-label">Senha</label>
+							<input type="password" class="form-control" id="senha" name="senha" required>
+						</div>					
+						<div class="central">							
+							<button type="button" class="btn btn-primary btn-lg btn-block" onclick="realizarLogin()">Acessar</button>					
+						</div>
+							<div>
+							<a href="esquecisenha.html" style="color: black; text-decoration: underline; float:left">Esqueci minha Senha</a>
+							</div>
+							<div>
+						
+							</div>					
+					<br>
+					<div id="erroLogin" class="alert alert-danger d-none" role="alert">
+						Login ou senha incorretos. Por favor, tente novamente.
+					</div>			
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+
+	function realizarLogin() {
+	    var loginInput = document.querySelector("#login");
+	    var senhaInput = document.querySelector("#senha");
+	    var login = loginInput.value;
+	    var senha = senhaInput.value;
+
+	    var jsonLog = {
+	        login: login,
+	        senha: senha
+	    };
+
+	    var requestOptions = {
+	        method: 'POST',
+	        body: JSON.stringify(jsonLog),
+	        headers: {
+	            'Content-Type': 'application/json'
+	        }
+	    };
+
+	    fetch("login", requestOptions)
+	        .then(response => {
+	            if (!response.ok) {
+	                document.getElementById('erroLogin').classList.remove('d-none');
+	                throw new Error('Erro na solicitação');
+	            }
+	            return response.json();
+	        })
+	        .then(data => {
+	            var tokenLimpo = data.Authorization.split(' ')[1];
+	            var empresa = data.empresa; 
+
+	           
+	            localStorage.setItem("token", tokenLimpo);
+	            localStorage.setItem("login", login);
+	           
+
+	            window.location.href = "telavalidacao.html";
+	        })
+	        .catch(error => {
+	            console.error('Erro ao fazer login:', error);
+	        });
+	}
+
+		function PrimeiroAcesso() {window.location.href = "primeiroacessovalidacao.html";}
+
+	</script>
+</body>
+</html>
