@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style>
+		body {
+			font-family: 'Arial Bold', sans-serif;
+			font-size: 15px;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		form {
+			background-color: #fff;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			box-sizing: border-box;
+		}
+
+		button {
+			background-color: #4caf50;
+			color: #fff;
+			padding: 10px 15px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+		
+		#mensagens {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+	</style>
+</head>
+
+<body>
+
+	<form>
+
+		<h1 style="text-align: center;">Validação de Primeiro Acesso</h1>
+		<h5 style="text-align: center;">O Email Deverá existir em nossa base de cadastros.</h5>
+		
+		<label for="login" class="form-label">Login:</label>
+		<input type="text" class="form-control" id="login" name="login" required="required">
+
+		<label for="email" class="form-label">Email:</label>
+		<input type="text" class="form-control" id="email" name="email" required="required">
+
+		<label for="senha" class="form-label">Senha:</label>
+		<input type="password" class="form-control" id="senha" name="senha" required="required">
+
+		<label for="confirmaSenha" class="form-label">Confirme a Senha:</label>
+		<input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" required="required">
+
+		<button type="button" onclick="gravarSenha()">Cadastrar</button>
+		<button type="button" onclick="voltarLogin()">Voltar</button>
+		
+		<div id="mensagens"></div>
+	</form>
+
+	
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+
+
+		function gravarSenha() {
+			var login = document.getElementById("login").value;
+			var email = document.getElementById("email").value;
+			var senha = document.getElementById("senha").value;
+			var confirmaSenha = document.getElementById("confirmaSenha").value;
+
+			if (senha !== confirmaSenha) {
+				exibirMensagem("As senhas não correspondem", "error");
+				return;
+			}
+
+			var jsonAcesso = {
+				login: login,
+				email: email,
+				senha: senha
+			}
+
+			$.ajax({
+				method: "PUT",
+				url: "CaminhaoController/primeiroacesso",
+				data: JSON.stringify(jsonAcesso),
+				contentType: "application/json",
+				success: function (response) {
+					 exibirMensagem("Senha cadastrada com sucesso", "success");
+					 alert ("Senha cadastrada com sucesso!");
+					  window.location.href = 'loginvalidacao.html';
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					exibirMensagem(xhr.responseText, errorThrown);
+				}
+			});
+
+			function exibirMensagem(mensagem, tipo) {
+				var mensagensDiv = document.getElementById("mensagens");
+
+				mensagensDiv.innerHTML = "";
+
+				var mensagemElement = document.createElement("div");
+				mensagemElement.className = tipo;
+				mensagemElement.textContent = mensagem;
+
+				mensagensDiv.appendChild(mensagemElement);
+			}
+
+		}
+		
+		function voltarLogin(){
+				window.location.href = 'loginvalidacao.html';
+		}
+
+	</script>
+
+</body>
+
+</html>

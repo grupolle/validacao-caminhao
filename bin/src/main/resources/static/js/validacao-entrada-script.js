@@ -9,9 +9,7 @@ $(document).ready(function() {
     const btnIniciarValidacao = $('#btnIniciarValidacao');
     const inputIdRev = $('#inputIdRev');
     const validarManualModal = $('#validarManualModal');
-    const btnIniciarValidacaoManual = $('#btnIniciarValidacaoManual');
-     const validarManualModalInfo = $('#validarManualModalInfo');
-    const btnIniciarValidacaoManualInfo= $('#btnIniciarValidacaoManualInfo'); // Adicionei a variável para o botão de validação manual
+    const btnIniciarValidacaoManual = $('#btnIniciarValidacaoManual'); // Adicionei a variável para o botão de validação manual
 
     // Focar automaticamente no campo inputOC ao abrir a página
     inputOC.focus();
@@ -28,7 +26,7 @@ $(document).ready(function() {
             } else {
                 limparLista();
             }
-        }, 1500);
+        }, 1000);
     });
 
     // Evento para limpar a lista
@@ -335,7 +333,15 @@ function tocarSom(url) {
 
     return rowsHtml;
 }
+// Função para abrir a modal modalValidar e carregar as informações
+function abrirModalInfo(info) {
+    // Exibe o idRev e carrega os dados
+    $('#idRevInfo').val(info.idrev || 'N/A');  // Armazena o idRev na modal
 
+    // Preenche a tabela na modal com os dados recebidos
+    $('#ModalInfo tbody').html(tabelaInfo(info)); 
+    $('#ModalInfo').modal('show');  // Exibe a modal modalValidar
+}
 
 // Função para criar as linhas da tabela com as informações recebidas
 function tabelaInfo(info) {
@@ -354,48 +360,16 @@ function tabelaInfo(info) {
 
 // Evento para abrir a modal de informações
 $(document).on('click', '.icon-info', function() {
-    var idRev = $(this).closest('tr').find('.idrev').text().trim(); // Captura o IDREV correto
-
-    console.log('IDREV capturado:', idRev); // Log para verificar
+    var idRev = $(this).data('idrev');  // Captura o idRev associado ao botão de informação
 
     // Busca as informações nos dados carregados
-    var info = dadosOrdemCarga.find(entrada => entrada.idrev == idRev);
+    var info = dadosOrdemCarga.find(entrada => entrada.idrev === idRev);
 
     if (info) {
-        abrirModalInfo(info);
+        abrirModalInfo(info);  // Chama a função para abrir a modal e carregar as informações
     } else {
         console.error('Informações não encontradas para o idRev:', idRev);
     }
 });
 
-// Função para abrir a modal e carregar as informações
-function abrirModalInfo(info) {
-    $('#idRevManualInfo').val(info.idrev || 'N/A'); // Define o idRev corretamente
-    console.log('IDREV definido na modal:', info.idrev); // Log para depuração
-
-    // Preenche a tabela dentro da modal
-    $('#ModalInfo tbody').html(tabelaInfo(info)); 
-    $('#ModalInfo').modal('show'); 
-}
-
-// Definição da função de validação
-window.validarVolumeManualInfo = function() {
-    var idRev = $('#idRevManualInfo').val().trim(); // Pega o ID correto
-
-    console.log('Validando idRev:', idRev); 
-
-    if (!idRev || idRev === 'N/A') {
-        console.error('IDREV não encontrado ou inválido!');
-        return;
-    }
-
-    validarIdRev(idRev, 'M'); 
-    $('#ModalInfo').modal('hide');
-};
-
-
-
 });
-
-
-

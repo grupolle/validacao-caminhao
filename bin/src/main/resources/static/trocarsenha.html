@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+</head>
+<style>
+	.btn-custom {
+		background-color: #d0444c;
+		color: #fff;
+	}
+
+	.btn-custom:hover {
+		background-color: #a5333d;
+		color: #fff;
+	}
+
+	.central {
+		text-align: center;
+	}
+</style>
+
+<body>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="text-center">Alteração de Senha</h3>
+					</div>
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label">Senha Atual</label>
+							<input type="password" class="form-control" id="senhaatual" name="senha" required="true">
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Nova Senha</label>
+							<input type="password" class="form-control" id="novasenha" name="senha" required="true">
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Confirmação Nova Senha</label>
+							<input type="password" class="form-control" id="confirmasenha" name="senha" required="true">
+						</div>
+
+						<div class="central">
+							<button type="button" class="btn btn-custom" onclick="alterarSenha()">Confirmar Alteração
+							</button>
+							<p id="notificationMessage" class="mt-2"></p>
+						</div>
+						<div style="margin-left:0.5%">
+							<button type="button" class="btn btn-secondary"
+								onclick="window.location.href = 'tela.html';">Voltar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Adicione um modal para exibir mensagens de notificação -->
+	<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="notificationModalLabel">Notificação</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p id="notificationModalMessage"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script>
+	function showNotification(message) {
+		$("#notificationMessage").text(message);
+	}
+	function alterarSenha() {
+		var token = localStorage.getItem("token");
+		var login = localStorage.getItem("login");
+		var senhaatual = document.querySelector("#senhaatual");
+		var novasenha = document.querySelector("#novasenha");
+		var confirmasenha = document.querySelector("#confirmasenha");
+
+		$("#notificationMessage").text("");
+		$("#notificationModalMessage").text("");
+
+		if (senhaatual.value.trim() === "" || novasenha.value.trim() === "" || confirmasenha.value.trim() === "") {
+			showNotification('Por favor, preencha todos os campos de senha.');
+		} else if (novasenha.value !== confirmasenha.value) {
+			showNotification('A nova senha e a confirmação não coincidem.');
+		} else {
+			var dadosEnvio = {
+				login: login,
+				senha: senhaatual.value,
+				novaSenha: novasenha.value,
+			};
+			$.ajax({
+				type: "PUT",
+				url: "CaminhaoController/trocarSenha",
+				data: JSON.stringify(dadosEnvio),
+				headers: {
+					Authorization: 'Bearer ' + token
+				},
+				contentType: "application/json; charset=utf-8",
+				success: function (response) {
+					showNotification('Senha alterada com sucesso!');
+					senhaatual.value = "";
+					novasenha.value = "";
+					confirmasenha.value = "";
+				},
+				error: function (xhr, status, errorThrown) {
+					showNotification('Erro ao alterar a senha. Verifique as informações fornecidas.');
+				}
+			});
+		}
+	}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</html>
