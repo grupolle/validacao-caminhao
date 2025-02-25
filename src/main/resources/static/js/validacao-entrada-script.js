@@ -143,12 +143,38 @@ $('#inputIdRev').on('input', function () {
         validarManualModal.modal('show');
     });
 
+// Definição da função de validação da validarManualModal
 window.validarVolumeManual = function() {
-    var idRev = $('#idRevManual').val();  
-    validarIdRev(idRev, 'M');  
+    var idRev = $('#idRevManual').val().trim(); // Pega o ID correto
+
+    console.log('Validando idRev:', idRev); 
+
+    if (!idRev || idRev === 'N/A') {
+        console.error('IDREV não encontrado ou inválido!');
+        return;
+    }
+
+    // Encontra a linha correspondente na tabela
+    var linhaCorrespondente = $(`#tabelaordemcarga tbody tr`).filter(function() {
+        return $(this).find('td:first').text().trim() === idRev;
+    });
+
+    // Verifica se a etiqueta já foi validada
+    const jaValidado = linhaCorrespondente.find('.entrou .fa-check').length > 0;
+
+    if (jaValidado) {
+        $('.alert-etiqueta-ja-validada').remove();
+        $('body').append(`<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA <strong>${idRev}</strong> JÁ VALIDADA</div>`);
+        $('#inputIdRev').val('');
+        tocarSom('sounds/incorreto.mp3');
+
+        setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 2000);
+    } else {
+        validarIdRev(idRev, 'M');
+    }
+
     $('#validarManualModal').modal('hide');
 };
-
     
 function validarIdRev(idRev, tipoValidacao) {
     var token = localStorage.getItem("token");
@@ -389,7 +415,25 @@ window.validarVolumeManualInfo = function() {
         return;
     }
 
-    validarIdRev(idRev, 'M'); 
+    // Encontra a linha correspondente na tabela
+    var linhaCorrespondente = $(`#tabelaordemcarga tbody tr`).filter(function() {
+        return $(this).find('td:first').text().trim() === idRev;
+    });
+
+    // Verifica se a etiqueta já foi validada (ícone de check dentro da classe "entrou")
+    const jaValidado = linhaCorrespondente.find('.entrou .fa-check').length > 0;
+
+    if (jaValidado) {
+        $('.alert-etiqueta-ja-validada').remove(); // Remove alertas anteriores
+        $('body').append(`<div class="alert-message alert-etiqueta-ja-validada">ETIQUETA <strong>${idRev}</strong> JÁ VALIDADA</div>`);
+        $('#inputIdRev').val('');
+        tocarSom('sounds/incorreto.mp3');
+
+        setTimeout(() => $('.alert-etiqueta-ja-validada').fadeOut(500, function() { $(this).remove(); }), 2000);
+    } else {
+        validarIdRev(idRev, 'M');
+    }
+
     $('#ModalInfo').modal('hide');
 };
 
